@@ -54,6 +54,6 @@ gulp.task('browser-sync', function(){
 	gulp.watch('app/scss/*.scss', ['scss', browserSync.reload]);
 });
 
-gulp.task('build', ['clean', 'html', 'vendor', 'rjs', 'scss']);
+gulp.task('build', ['html', 'vendor', 'rjs', 'scss']);
 
 gulp.task('default', ['build', 'browser-sync']);

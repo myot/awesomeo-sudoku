@@ -1,12 +1,12 @@
-define('board', [	
-	'jquery',
-	'game' ]
-, function($, Game){
+define('board', [ 'jquery', 'game' ], 
+	function($, Game){
+	'use strict';
 
 	var Board = function(options){
 		this.options = options || {};
 		
 		this.$container = $(options.container);
+
 		this._col = options.col || 9;
 		this._row = options.row || 9;
 	};
@@ -15,18 +15,38 @@ define('board', [
 
 		newGame: function(){
 			console.log("Starting new game...");
+			
+			this.$container.empty();
+			this.startGame();
 		},
 
 		startGame: function(){
 			console.log("Initializing board...");
+			
+			//Init Game data.
 			this.game = new Game();
 
+			//Init UI.
+			this._addMessageBar();
 			this._addButtons();
 			this._drawBoard();
 		},
 
 		solveGame: function(){
 			console.log("Solving game...");
+
+			if (this.game.solve()){
+				//congrats!
+				console.log("Congratulations!");
+			} else {
+				//oh oh..
+				console.log("Try again?");
+			}
+		},
+
+		_addMessageBar: function() {
+			this.$message = $('<div>').addClass('message-bar');
+			this.$container.prepend(this.$message);
 		},
 
 		_addButtons: function() {
@@ -51,7 +71,7 @@ define('board', [
 			$buttonBar.append($newGame);
 			$buttonBar.append($solveGame);
 
-			this.$container.prepend($buttonBar);
+			this.$container.append($buttonBar);
 		},
 
 		_drawBoard: function() {
@@ -68,10 +88,14 @@ define('board', [
 					cellNumber = this._lookupCellNumber(row, col);
 					cellData = gameData[cellNumber];
 
+					//cache user data with the data with we are going to show by default
+					this.game.setData(cellNumber, (cellData.show ? cellData.val : 0));
+
 					$cell = $('<input>')
 									.attr('maxlength', 1)
-									.attr('name', 'c'+cellNumber)
-									.val(cellData);
+									.data('cell', cellNumber)
+									.val(cellData.show? cellData.val : '')
+									.change(this, this._onUserInput);
 
 
 					$td = $('<td>').append($cell);
@@ -81,6 +105,61 @@ define('board', [
 			}
 
 			this.$container.append($board);
+		},
+
+		_onUserInput: function(event){
+			var context = event.data,
+					$cell = $(event.target),
+					cellNumber = $cell.data('cell'),
+					val = $cell.val(),
+					oldValue = context.game.getData(cellNumber); //remember the old value in case we want to rollback
+
+			if (context._validateCell(cellNumber, val)) {
+				context.game.setData(cellNumber, parseInt(val, 10));
+				context.$message.html('');
+			} else {
+				$cell.val(oldValue > 0 ? oldValue : '');
+				$cell.focus();
+				context.$message.html('Invalid input!');
+			}
+
+		},
+
+		_validateCell: function(cellNumber, val){
+			if (isNaN(val)){
+				return false;
+			}
+
+			var row, col, i, j, gridStartX, gridStartY,
+					num = parseInt(val, 10);
+
+			//check for validity in row
+			row = Math.floor(cellNumber / this._row);
+			for (i=0; i < this._row; i++){
+				if (this.game.getData((row*this._row)+i) === num){
+					return false;
+				}
+			}
+
+			//check for validity in col
+			col = cellNumber % this._col;
+			for (j=0; j < this._col; j++){
+				if (this.game.getData((j*this._col)+col) === num){
+					return false;
+				}
+			}
+
+			//check for validity in sub-grid
+			gridStartX = row - row % 3;
+			gridStartY = col - col % 3;
+			for (i=gridStartX; i<gridStartX+3; i++){
+				for (j=gridStartY; j<gridStartY+3; j++){
+					if (this.game.getData((i*this._row)+j) === num){
+						return false;
+					}
+				}
+			}
+			return true;
 		},
 
 		_lookupCellNumber: function(row, col){

@@ -1,9 +1,8 @@
-define('app', [	
-	'board'
-]
-, function(Board){
+define('app', [ 'board' ], 
+	function(Board){
+	'use strict';
 
-	this.board = new Board({container:'.sudoku-board'});
-	this.board.startGame();
+	var board = new Board({container:'.sudoku-board'});
+	board.startGame();
 
 });
