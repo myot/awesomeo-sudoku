@@ -27,8 +27,8 @@ define('board', [ 'jquery', 'game' ],
 			this.game = new Game();
 
 			//Init UI.
-			this._addMessageBar();
 			this._addButtons();
+			this._addMessageBar();
 			this._drawBoard();
 		},
 
@@ -46,7 +46,7 @@ define('board', [ 'jquery', 'game' ],
 
 		_addMessageBar: function() {
 			this.$message = $('<div>').addClass('message-bar');
-			this.$container.prepend(this.$message);
+			this.$container.append(this.$message);
 		},
 
 		_addButtons: function() {
@@ -76,6 +76,7 @@ define('board', [ 'jquery', 'game' ],
 
 		_drawBoard: function() {
 			var col, row, cellNumber, gameData, cellData,
+					gridX, gridY, evenGrid,
 					$row, $board, $cell, $td;
 
 			$board = $('<table>').addClass('sudoku-game');
@@ -83,22 +84,32 @@ define('board', [ 'jquery', 'game' ],
 
 			for (col = 0; col < this._col; col++){
 				$row = $('<tr>');
+				gridY = Math.floor(col / 3);
+
 				for (row = 0; row < this._row; row++){
 					
 					cellNumber = this._lookupCellNumber(row, col);
 					cellData = gameData[cellNumber];
+					gridX = Math.floor(row / 3);
 
 					//cache user data with the data with we are going to show by default
 					this.game.setData(cellNumber, (cellData.show ? cellData.val : 0));
 
+					evenGrid = ((gridX + gridY) % 2 === 0);
+
 					$cell = $('<input>')
 									.attr('maxlength', 1)
 									.data('cell', cellNumber)
-									.val(cellData.show? cellData.val : '')
 									.change(this, this._onUserInput);
 
+					if (cellData.show){
+						$cell.val(cellData.val).attr('disabled', true);
+					}
 
-					$td = $('<td>').append($cell);
+
+					$td = $('<td>')
+									.addClass(evenGrid? 'even' : 'odd')
+									.append($cell);
 					$row.append($td);
 				}
 				$board.append($row);
