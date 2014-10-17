@@ -114,8 +114,9 @@ define('board', [ 'jquery', 'game' ],
 				}
 				$board.append($row);
 			}
-
+			$board.css('display', 'none');
 			this.$container.append($board);
+			$board.fadeIn('slow');
 		},
 
 		_onUserInput: function(event){
