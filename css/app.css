@@ -1,0 +1,100 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline; }
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+  display: block; }
+
+body {
+  line-height: 1; }
+
+ol, ul {
+  list-style: none; }
+
+blockquote, q {
+  quotes: none; }
+
+blockquote:before, blockquote:after {
+  content: '';
+  content: none; }
+
+q:before, q:after {
+  content: '';
+  content: none; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+body {
+  font: 100% Helvetica, sans-serif;
+  color: #ddd;
+  background-color: #2d2e29; }
+  body .container {
+    margin: 12px auto;
+    text-align: center; }
+  body h1 {
+    font-size: 150%; }
+
+.sudoku-board input {
+  border: 0;
+  outline: 0;
+  background: transparent;
+  text-align: center;
+  font-size: 120%;
+  width: 20px;
+  height: 20px; }
+  .sudoku-board input:disabled {
+    font-weight: bold;
+    color: #2C712E; }
+.sudoku-board table {
+  padding: 10px;
+  margin: 0 auto; }
+.sudoku-board td {
+  border: 1px solid #999;
+  padding: 0.5rem;
+  text-align: left; }
+  .sudoku-board td.even {
+    background-color: #F9F9F9; }
+  .sudoku-board td.odd {
+    background-color: #D9D9D9; }
+
+.message-bar {
+  height: 30px;
+  font-weight: bold;
+  color: red; }
+
+.action-buttons {
+  padding: 12px 0; }
+  .action-buttons .button {
+    background-color: #eae0c2;
+    color: #505739;
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid #333029;
+    white-space: nowrap;
+    padding: 16px 24px;
+    margin: 0 6px;
+    font-size: 100%; }
+    .action-buttons .button:active {
+      position: relative;
+      top: 1px; }
+    .action-buttons .button:hover {
+      background-color: #ccc2a6;
+      text-decoration: none; }
+
+/*# sourceMappingURL=app.css.map */
