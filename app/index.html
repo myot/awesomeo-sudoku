@@ -14,5 +14,14 @@
       <h1>Awesomeo Sudoku</h1>
       <div class="sudoku-board"></div>
     </div>
+    <script src="vendor/require-2.1.15.min.js"></script>
+    <script>
+      requirejs.config({
+        "baseUrl": "js",
+        "paths": {
+          "app": "app-bundle"
+        }
+      });
+    </script>
   </body>
 </html>

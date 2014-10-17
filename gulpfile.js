@@ -5,7 +5,9 @@ var DEST = 'build/';
 var gulp = require('gulp');
 var del = require('del');
 var browserSync = require('browser-sync');
-
+var amdOptimize = require('amd-optimize');
+var concat = require('gulp-concat');
+var sass = require('gulp-ruby-sass');
 
 gulp.task('clean', function(cb){
 	del(DEST, cb);
@@ -16,6 +18,24 @@ gulp.task('html', function(){
 		.pipe(gulp.dest(DEST));
 });
 
+gulp.task('rjs', function(){
+	return gulp.src('app/js/*.js')
+		.pipe(amdOptimize('app'))
+		.pipe(concat('app-bundle.js'))
+		.pipe(gulp.dest(DEST+'js'));
+});
+
+gulp.task('vendor', function(){
+	return gulp.src('app/vendor/*')
+		.pipe(gulp.dest(DEST+'vendor'));
+});
+
+gulp.task('scss', function(){
+	return gulp.src('app/scss/*.scss')
+		.pipe(sass())
+		.pipe(gulp.dest(DEST+'css'));
+});
+
 gulp.task('browser-sync', function(){
 	browserSync({
 		server: {
@@ -24,8 +44,10 @@ gulp.task('browser-sync', function(){
 	});
 
 	gulp.watch('app/*.html', ['html', browserSync.reload]);
+	gulp.watch('app/js/*.js', ['rjs', browserSync.reload]);
+	gulp.watch('app/scss/*.scss', ['scss', browserSync.reload]);
 });
 
-gulp.task('build', ['clean', 'html']);
+gulp.task('build', ['html', 'vendor', 'rjs', 'scss']);
 
-gulp.task('default', ['build', 'browser-sync']);
+gulp.task('default', ['clean', 'build', 'browser-sync']);
