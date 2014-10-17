@@ -1,5 +1,9 @@
 define('app', [	
+	'board'
 ]
-, function(){
+, function(Board){
+
+	this.board = new Board({container:'.sudoku-board'});
+	this.board.initialize();
 
 });

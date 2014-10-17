@@ -9,6 +9,12 @@ var amdOptimize = require('amd-optimize');
 var concat = require('gulp-concat');
 var sass = require('gulp-ruby-sass');
 
+var rjsOptions = {
+    "paths": {
+      "jquery": "app/vendor/jquery-2.1.1.min"
+    }
+};
+
 gulp.task('clean', function(cb){
 	del(DEST, cb);
 });
@@ -20,7 +26,7 @@ gulp.task('html', function(){
 
 gulp.task('rjs', function(){
 	return gulp.src('app/js/*.js')
-		.pipe(amdOptimize('app'))
+		.pipe(amdOptimize('app', rjsOptions))
 		.pipe(concat('app-bundle.js'))
 		.pipe(gulp.dest(DEST+'js'));
 });
