@@ -8,6 +8,7 @@ var browserSync = require('browser-sync');
 var amdOptimize = require('amd-optimize');
 var concat = require('gulp-concat');
 var sass = require('gulp-ruby-sass');
+var uglify = require('gulp-uglify');
 
 var rjsOptions = {
     "paths": {
@@ -28,6 +29,7 @@ gulp.task('rjs', function(){
 	return gulp.src('app/js/*.js')
 		.pipe(amdOptimize('app', rjsOptions))
 		.pipe(concat('app-bundle.js'))
+		.pipe(uglify())
 		.pipe(gulp.dest(DEST+'js'));
 });
 
